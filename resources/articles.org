@@ -82,7 +82,10 @@
 - http://cs230.stanford.edu/projects_fall_2022/reports/16.pdf
 
 * Available datasets
-TODO
+** giant-piano midi dataset
+- GiantMIDI-Piano: A large-scale MIDI Dataset for
+  Classical Piano Music
+- https://arxiv.org/pdf/2010.07061.pdf
 
 * diverse
 ** overview of different music gen methods 
