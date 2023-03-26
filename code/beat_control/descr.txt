@@ -1,0 +1,4 @@
+#FIXME: docu
+beat_control  should contain a project prototype to explore
+ controllability for a naive discrete input, such as step frequency, or beat
+spec. later: to be integrated with gyro and IMU measurements
