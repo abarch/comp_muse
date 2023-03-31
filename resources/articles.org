@@ -19,12 +19,16 @@
   are both generic to any dimension and highly customizable to work on
   other formats. Note: no pre-trained models are provided here, this
   library is meant for research purposes.
+
 ** dance diffusion (harmonai)
 - https://colab.research.google.com/github/Harmonai-org/sample-generator/blob/main/Dance_Diffusion.ipynb?pli=1#scrollTo=lU97ZiP7nSKS
 - Unconditional random audio sample generation
 - Audio sample regeneration/style transfer using a single audio file
   or recording
 - Audio interpolation between two audio files
+
+** TODO diffusion lm and controllable music gen 
+- https://github.com/SwordElucidator/Diffusion-LM-on-Symbolic-Music-Generation 
 
 
 * Literature 
