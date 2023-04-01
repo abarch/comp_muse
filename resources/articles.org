@@ -86,6 +86,9 @@
 - GiantMIDI-Piano: A large-scale MIDI Dataset for
   Classical Piano Music
 - https://arxiv.org/pdf/2010.07061.pdf
+** mono midi transposition dataset 
+- simpler dataset https://sebasgverde.github.io/mono-midi-transposition-dataset/
+
 
 * diverse
 ** overview of different music gen methods 
