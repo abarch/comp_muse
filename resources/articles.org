@@ -19,6 +19,7 @@
   are both generic to any dimension and highly customizable to work on
   other formats. Note: no pre-trained models are provided here, this
   library is meant for research purposes.
+
 ** dance diffusion (harmonai)
 - https://colab.research.google.com/github/Harmonai-org/sample-generator/blob/main/Dance_Diffusion.ipynb?pli=1#scrollTo=lU97ZiP7nSKS
 - Unconditional random audio sample generation
@@ -26,8 +27,41 @@
   or recording
 - Audio interpolation between two audio files
 
+** TODO diffusion lm and controllable music gen 
+- https://github.com/SwordElucidator/Diffusion-LM-on-Symbolic-Music-Generation 
+
 
 * Literature 
+** Diffusion-LM Improves Controllable Text Generation 
+- https://arxiv.org/pdf/2205.14217.pdf
+- Controlling the behavior of language models (LMs) without
+  re-training is a major open problem in natural language
+  generation. While recent works have demon- strated successes on
+  controlling simple sentence attributes (e.g., sentiment), there has
+  been little progress on complex, fine-grained controls (e.g.,
+  syntactic structure).  To address this challenge, we develop a new
+  non-autoregressive language model based on continuous diffusions
+  that we call Diffusion-LM. Building upon the recent successes of
+  diffusion models in continuous domains, Diffusion-LM iteratively
+  denoises a sequence of Gaussian vectors into word vectors, yielding
+  a sequence of intermediate latent variables. The continuous,
+  hierarchical nature of these inter- mediate variables enables a
+  simple gradient-based
+ algorithm to perform complex, controllable generation tasks. We
+ demonstrate successful control of Diffusion-LM for six challenging
+ fine-grained control tasks, significantly outperforming prior work.
+
+** Symbolic music generation conditioned on continuous-valued emotions
+- https://arxiv.org/pdf/2203.16165.pdf
+- In this paper we present a new approach for the generation of multi-instrument symbolic
+ music driven by musical emotion. The principal novelty of our approach centres on conditioning a state-
+ of-the-art transformer based on continuous-valued valence and arousal labels. In addition, we provide a
+ new large-scale dataset of symbolic music paired with emotion labels in terms of valence and arousal. We
+ evaluate our approach in a quantitative manner in two ways, first by measuring its note prediction accuracy,
+ and second via a regression task in the valence-arousal plane. Our results demonstrate that our proposed
+ approaches outperform conditioning using control tokens which is representative of the current state of the
+ art
+
 **  Noise2Music: Text-conditioned Music Generation with Diffusion Models
 -  https://arxiv.org/abs/2302.03917
 - https://google-research.github.io/noise2music/
