@@ -32,6 +32,9 @@
 
 
 * Literature 
+** FIGARO: Generating Symbolic Music with Fine-Grained Artistic Control
+
+- https://arxiv.org/pdf/2201.10936.pdf
 ** Diffusion-LM Improves Controllable Text Generation 
 - https://arxiv.org/pdf/2205.14217.pdf
 - Controlling the behavior of language models (LMs) without
