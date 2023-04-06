@@ -33,8 +33,27 @@
 
 * Literature 
 ** FIGARO: Generating Symbolic Music with Fine-Grained Artistic Control
-
 - https://arxiv.org/pdf/2201.10936.pdf
+
+** FIGARO: CONTROLLABLE MUSIC GENERATION   USING EXPERT AND LEARNED FEATURES
+- https://openreview.net/pdf/4ee95daea73cb05d2ea8780258b25684ccd82a88.pdf (more recent)
+
+- Recent symbolic music generative models have achieved significant improvements
+in the quality of the generated samples. Nevertheless, it remains hard for users
+to control the output in such a way that it matches their expectation. To address
+this limitation, high-level, human-interpretable conditioning is essential. In this
+work, we release FIGARO, a Transformer-based conditional model trained to
+generate symbolic music based on a sequence of high-level control codes. To this
+end, we propose description-to-sequence learning, which consists of automatically
+extracting fine-grained, human-interpretable features (the description) and training
+a sequence-to-sequence model to reconstruct the original sequence given only the
+description as input. FIGARO achieves state-of-the-art performance in multi-track
+symbolic music generation both in terms of style transfer and sample quality. We
+show that performance can be further improved by combining human-interpretable
+with learned features. Our extensive experimental evaluation shows that FIGARO is
+able to generate samples that closely adhere to the content of the input descriptions,
+even when they deviate significantly from the training distribution
+
 ** Diffusion-LM Improves Controllable Text Generation 
 - https://arxiv.org/pdf/2205.14217.pdf
 - Controlling the behavior of language models (LMs) without
