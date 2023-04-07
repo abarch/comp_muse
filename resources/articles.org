@@ -30,6 +30,9 @@
 ** TODO diffusion lm and controllable music gen 
 - https://github.com/SwordElucidator/Diffusion-LM-on-Symbolic-Music-Generation 
 
+** TODO FIGARO: Controllable Music Generation using Learned and Expert Features
+- multitrack symbolic multi-track midi generator with expert-defined control features
+- https://colab.research.google.com/drive/1UAKFkbPQTfkYMq1GxXfGZOJXOXU_svo6#scrollTo=Zsszt4J46OIj
 
 * Literature 
 ** FIGARO: Generating Symbolic Music with Fine-Grained Artistic Control
