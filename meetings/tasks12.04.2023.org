@@ -1,0 +1,15 @@
+#+TITLE: tasks due on 19.04.23
+#+Author: A. Moringen
+
+* Todos
+** David
+- FIGARO 
+** Johanna, Michael
+- LM training (stanford project) 
+- installed: /vol/amolea/code/Diffusion-LM-on-Symbolic-Music-Generation/
+- source the environment: conda activate muse395 
+** Qiqi, Alex
+- research and add information to available music training datasets. 
+
+
+ 
