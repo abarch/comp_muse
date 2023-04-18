@@ -178,7 +178,7 @@ Source: https://arxiv.org/abs/2008.01291
 ** Musical AI MIDI Dataset
 - https://composing.ai/dataset
 
-** Los Anegeles MIDI Dataset
+** Los Angeles MIDI Dataset
 - https://github.com/asigalov61/Los-Angeles-MIDI-Dataset
 
 ** The Expanded Groove MIDI Dataset
