@@ -140,6 +140,18 @@ even when they deviate significantly from the training distribution
 ** Diffusion-LM on Symbolic Music Generation with Controllability (stanford)
 - http://cs230.stanford.edu/projects_fall_2022/reports/16.pdf
 
+** Generating Lead Sheets with Affect: A Novel Conditional seq2seq Framework
+The authors proposed a novel approach to generate lead sheets (melody with cord progression) from scratch which are conditioned on musical valence, phrasing and time signature. They took inspiration from the Neural Machine Translation problem and made use of the sequence to sequence framework to translate a sequence of high-level musical parameters (conditions) to a lead sheet. A user can define high-level features (valence, phrasing and time signature) as well as a "low-level" event density called event density which describes the number of events in a bar.
+Source: https://arxiv.org/abs/2104.13056
+
+** MusicLM: Generating Music From Text
+MusicLM is a generative model that produces high-quality music consistent over several minutes conditioned on text sequence with additional conditional input possible such as melody or image. It uses three independent pretrained models to generate latent representations for audio and text and to calculate coherence between audio and text embeddings. The generation of music is described as a hierarchical sequence-to-sequence modeling task, with a semantic modeling stage to process conditioning signals and an acoustic modeling stage to translate both conditioning tokens and semantic tokesn to audio. 
+Source: https://arxiv.org/abs/2301.11325
+
+** Music SketchNet: Controllable Music Generation via Factorized Representations of Pitch and Rhythm
+Music SketchNet is a neural network framework for automatic music generation guided by partial musical ideas from a user. The model is designed to fill in missing part based on known past and future context and "user specification" in form of text input. It uses SketchVAE, a novel variational autoencoder that explicitly factorizes rhythm and pitch contour, to encode and decode the music between external music measures and learned factorized latent representatations. The authors further introduced SketchInpainter, which predicts musical ideas in the form of latent variables and SketchConnector which combines the output from SketchInpainter and the user's sketching. The output of SketchConnector is then decoded by SketchVAE to generate music.
+Source: https://arxiv.org/abs/2008.01291
+
 * Available datasets
 ** giant-piano midi dataset
 - GiantMIDI-Piano: A large-scale MIDI Dataset for
@@ -148,6 +160,17 @@ even when they deviate significantly from the training distribution
 ** mono midi transposition dataset 
 - simpler dataset https://sebasgverde.github.io/mono-midi-transposition-dataset/
 
+** The Lahk MIDI Dataset
+- https://colinraffel.com/projects/lmd/#license
+
+** FMA (MP3 format)
+- https://github.com/mdeff/fma
+
+** The MAESTRO Dataset
+- https://magenta.tensorflow.org/datasets/maestro
+
+** MusicCaps
+- https://research.google/resources/datasets/musiccaps/
 
 * diverse
 ** overview of different music gen methods 
