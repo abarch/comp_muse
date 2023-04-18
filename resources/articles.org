@@ -163,6 +163,9 @@ Source: https://arxiv.org/abs/2008.01291
 ** The Lahk MIDI Dataset
 - https://colinraffel.com/projects/lmd/#license
 
+** Lakh MIDI Dataset Clean
+- https://www.kaggle.com/datasets/imsparsh/lakh-midi-clean?resource=download
+
 ** FMA (MP3 format)
 - https://github.com/mdeff/fma
 
@@ -171,6 +174,21 @@ Source: https://arxiv.org/abs/2008.01291
 
 ** MusicCaps
 - https://research.google/resources/datasets/musiccaps/
+
+** Musical AI MIDI Dataset
+- https://composing.ai/dataset
+
+** Los Anegeles MIDI Dataset
+- https://github.com/asigalov61/Los-Angeles-MIDI-Dataset
+
+** The Expanded Groove MIDI Dataset
+- https://magenta.tensorflow.org/datasets/e-gmd
+
+** ADL Piano MIDI
+- https://paperswithcode.com/dataset/adl-piano-midi
+
+** Some further datasets (some are mentioned here, some not)
+- https://github.com/asigalov61/Tegridy-MIDI-Dataset
 
 * diverse
 ** overview of different music gen methods 
