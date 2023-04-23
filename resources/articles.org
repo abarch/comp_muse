@@ -145,9 +145,9 @@ The authors proposed a novel approach to generate lead sheets (melody with cord 
 Source: https://arxiv.org/abs/2104.13056
 
 ** MusicLM: Generating Music From Text
-MusicLM is a generative model that produces high-quality music consistent over several minutes conditioned on text sequence with additional conditional input possible such as melody or image. It uses three independent pretrained models to generate latent representations for audio and text and to calculate coherence between audio and text embeddings. The generation of music is described as a hierarchical sequence-to-sequence modeling task, with a semantic modeling stage to process conditioning signals and an acoustic modeling stage to translate both conditioning tokens and semantic tokesn to audio. 
-Source: https://arxiv.org/abs/2301.11325
-
+- MusicLM is a generative model that produces high-quality music consistent over several minutes conditioned on text sequence with additional conditional input possible such as melody or image. It uses three independent pretrained models to generate latent representations for audio and text and to calculate coherence between audio and text embeddings. The generation of music is described as a hierarchical sequence-to-sequence modeling task, with a semantic modeling stage to process conditioning signals and an acoustic modeling stage to translate both conditioning tokens and semantic tokesn to audio. 
+- Source: https://arxiv.org/abs/2301.11325
+- TEXT AND MELODY CONDITIONING EXAMPLE: https://google-research.github.io/seanet/musiclm/examples/
 ** Music SketchNet: Controllable Music Generation via Factorized Representations of Pitch and Rhythm
 Music SketchNet is a neural network framework for automatic music generation guided by partial musical ideas from a user. The model is designed to fill in missing part based on known past and future context and "user specification" in form of text input. It uses SketchVAE, a novel variational autoencoder that explicitly factorizes rhythm and pitch contour, to encode and decode the music between external music measures and learned factorized latent representatations. The authors further introduced SketchInpainter, which predicts musical ideas in the form of latent variables and SketchConnector which combines the output from SketchInpainter and the user's sketching. The output of SketchConnector is then decoded by SketchVAE to generate music.
 Source: https://arxiv.org/abs/2008.01291
