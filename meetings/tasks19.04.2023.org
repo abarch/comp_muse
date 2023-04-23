@@ -1,0 +1,10 @@
+#+TITLE: tasks due on 03.05.2023
+#+Author: A. Moringen
+
+* Todos
+** data sets:
+- add descriptions to the dataset entries
+** related work research:
+- people not finished with adding 3 papers to the list of related work articles - please add
+** architecture sketch
+- prepare the first version of the system architecture, to be presented at the next meeting.
