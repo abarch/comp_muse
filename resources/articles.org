@@ -176,35 +176,46 @@ Source:https://arxiv.org/pdf/2301.06890.pdf
 ** mono midi transposition dataset 
 - simpler dataset https://sebasgverde.github.io/mono-midi-transposition-dataset/
 
-** The Lahk MIDI Dataset
+** The Lakh MIDI Dataset
 - https://colinraffel.com/projects/lmd/#license
+- collection of 176.581 MIDI files
 
 ** Lakh MIDI Dataset Clean
 - https://www.kaggle.com/datasets/imsparsh/lakh-midi-clean?resource=download
+- subset of the Lakh MIDI Dataset
+- contains only files which names indicate their artist and title
 
 ** FMA (MP3 format)
 - https://github.com/mdeff/fma
+- 106.574 tracks of 161 unbalanced genres in MP3 format
 
 ** The MAESTRO Dataset
 - https://magenta.tensorflow.org/datasets/maestro
+- 200 hours of paired audio and MIDI recordings from ten years of International Piano-e-Competition
 
 ** MusicCaps
 - https://research.google/resources/datasets/musiccaps/
-
-** Musical AI MIDI Dataset
-- https://composing.ai/dataset
+- contains 5.521 music examples
+- all are labeled with an English aspect list and a free text caption
 
 ** Los Angeles MIDI Dataset
 - https://github.com/asigalov61/Los-Angeles-MIDI-Dataset
+- contains of around 600.000 MIDIs with extensive meta-data
 
 ** The Expanded Groove MIDI Dataset
 - https://magenta.tensorflow.org/datasets/e-gmd
+- dataset of human drum perfomances as MIDI files
+- contains 444 hours of audio from 43 drum kits
 
 ** ADL Piano MIDI
 - https://paperswithcode.com/dataset/adl-piano-midi
+- dataset of 11.086 piano pieces from different genres
+- based on the Lakh MIDI dataset
 
 ** Some further datasets (some are mentioned here, some not)
 - https://github.com/asigalov61/Tegridy-MIDI-Dataset
+- contains a multi-instrumental MIDI dataset with almost 2.000 songs
+- contains a list with their links of 15 other datsets
 
 * diverse
 ** overview of different music gen methods 
