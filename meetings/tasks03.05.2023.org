@@ -1,0 +1,13 @@
+#+TITLE: tasks due on 10.05.2023
+#+Author: A. Moringen
+
+* Todos
+
+** architecture description draft
+- prepare the first draft of the system architecture (c.a. 3 pages), to be presented at the next meeting. 
+
+** theory of controllability
+we will discuss details of how controllability is implemented in different generative models. Please prepare a 10 minutes presentation per group:
+- David und Alex: Figaro.  
+- Qiqi: MusicLM https://google-research.github.io/seanet/musiclm/examples/
+- Johanna und Michael: stanford approach 
