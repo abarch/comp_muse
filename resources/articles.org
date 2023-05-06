@@ -29,8 +29,8 @@
 
 ** TODO diffusion lm and controllable music gen 
 - https://github.com/SwordElucidator/Diffusion-LM-on-Symbolic-Music-Generation 
-- Based on https://github.com/abarch/comp_muse/blob/main/resources/articles.org#diffusion-lm-improves-controllable-text-generation
-- This is a Stanford cs230 project by Hao Sun and Liwen Ouyang https://github.com/abarch/comp_muse/blob/main/resources/articles.org#diffusion-lm-on-symbolic-music-generation-with-controllability-stanford
+- Based on [[diffusionlmpaper]]
+- This is a Stanford cs230 project by Hao Sun and Liwen Ouyang [[stanfordreport]]
 
 ** TODO FIGARO: Controllable Music Generation using Learned and Expert Features
 - multitrack symbolic multi-track midi generator with expert-defined control features
@@ -59,7 +59,7 @@ with learned features. Our extensive experimental evaluation shows that FIGARO i
 able to generate samples that closely adhere to the content of the input descriptions,
 even when they deviate significantly from the training distribution
 
-** Diffusion-LM Improves Controllable Text Generation 
+** Diffusion-LM Improves Controllable Text Generation <<diffusionlmpaper>>
 - https://arxiv.org/pdf/2205.14217.pdf
 - Controlling the behavior of language models (LMs) without
   re-training is a major open problem in natural language
@@ -139,7 +139,7 @@ even when they deviate significantly from the training distribution
 **  SYMBOLIC MUSIC GENERATION WITH DIFFUSION MODELS     
 - https://arxiv.org/pdf/2103.16091.pdf
 
-** Diffusion-LM on Symbolic Music Generation with Controllability (stanford)
+** Diffusion-LM on Symbolic Music Generation with Controllability (stanford) <<stanfordreport>>
 - http://cs230.stanford.edu/projects_fall_2022/reports/16.pdf
 
 ** Generating Lead Sheets with Affect: A Novel Conditional seq2seq Framework
