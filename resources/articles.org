@@ -30,7 +30,7 @@
 ** TODO diffusion lm and controllable music gen 
 - https://github.com/SwordElucidator/Diffusion-LM-on-Symbolic-Music-Generation 
 - Based on https://github.com/abarch/comp_muse/blob/main/resources/articles.org#diffusion-lm-improves-controllable-text-generation
-- This is a Stanford cs230 project by Hao Sun and Liwen Ouyang
+- This is a Stanford cs230 project by Hao Sun and Liwen Ouyang https://github.com/abarch/comp_muse/blob/main/resources/articles.org#diffusion-lm-on-symbolic-music-generation-with-controllability-stanford
 
 ** TODO FIGARO: Controllable Music Generation using Learned and Expert Features
 - multitrack symbolic multi-track midi generator with expert-defined control features
