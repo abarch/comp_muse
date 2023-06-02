@@ -220,6 +220,14 @@ Source:https://arxiv.org/pdf/2301.06890.pdf
 - contains a multi-instrumental MIDI dataset with almost 2.000 songs
 - contains a list with their links of 15 other datsets
 
+** EMOPIA
+- https://annahung31.github.io/EMOPIA/
+- https://zenodo.org/record/5090631#.YPPo-JMzZz8
+- shared multi-modal (audio and MIDI) database focusing on perceived emotion in pop piano music
+- contains 1,087 music clips from 387 songs and clip-level emotion labels annotated by four annotators
+- quadrant Q1: contains High Valence, High Arousal MIDI files
+- quadrant Q3: contains Low Valence, Low Arousal MIDI files
+
 * diverse
 ** overview of different music gen methods 
 -  https://www.catalyzex.com/s/music%20generation
