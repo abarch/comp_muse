@@ -324,6 +324,25 @@ class MidiDataset(IterableDataset):
           # Assume that bar_ids are in ascending order (except for EOS)
           min_bar = b_ids[0]
           desc_events = current_file['description']
+
+          change_cords = False
+          if change_cords:
+            for index, event in enumerate(desc_events):
+              if event.split("_")[0] == "Chord":
+                rest, quality = event.split(":")
+                if quality == "maj":
+                  desc_events[index] = rest + ":min"
+                elif quality == "min":
+                  desc_events[index] = rest + ":maj"
+                elif quality == "maj7":
+                  desc_events[index] = rest + ":min7"
+                elif quality == "min7":
+                  desc_events[index] = rest + ":maj7"
+                # elif quality == "dim":
+                #  desc_events[index] = rest + ":aug"
+                # elif quality == "aug":
+                #  desc_events[index] = rest + ":dim"
+
           desc_bars = [i for i, event in enumerate(desc_events) if f"{BAR_KEY}_" in event]
           # subtract one since first bar has id == 1
           start_idx = desc_bars[max(0, min_bar - 1)]
