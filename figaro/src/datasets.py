@@ -191,7 +191,8 @@ class MidiDataset(IterableDataset):
                bar_token_mask=None,
                bar_token_idx=2,
                use_cache=True,
-               print_errors=False):
+               print_errors=False,
+               change_chord=False):
     self.files = midi_files
     self.group_bars = group_bars
     self.max_len = max_len
@@ -201,6 +202,7 @@ class MidiDataset(IterableDataset):
     self.max_contexts_per_file = max_contexts_per_file
     self.use_cache = use_cache
     self.print_errors = print_errors
+    self.change_chord = change_chord
 
     self.vocab = RemiVocab()
 
@@ -325,23 +327,38 @@ class MidiDataset(IterableDataset):
           min_bar = b_ids[0]
           desc_events = current_file['description']
 
-          change_cords = False
-          if change_cords:
+          def get_minor_parallel(tonic):
+            pitch_classes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+            major_tonic_index = pitch_classes.index(tonic)
+            minor_tonic_index = (major_tonic_index + 9) % 12  # Adding 9 to the major tonic index gives the minor tonic index
+            return pitch_classes[minor_tonic_index]
+
+          def get_major_parallel(tonic):
+            pitch_classes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+            minor_tonic_index = pitch_classes.index(tonic)
+            major_tonic_index = (minor_tonic_index + 3) % 12  # Adding 3 to the minor tonic index gives the major tonic index
+            return pitch_classes[major_tonic_index]
+
+          if self.change_chord:
             for index, event in enumerate(desc_events):
               if event.split("_")[0] == "Chord":
-                rest, quality = event.split(":")
+                orig_chord = event.split("_")[1]
+                pitch, quality = orig_chord.split(":")
                 if quality == "maj":
-                  desc_events[index] = rest + ":min"
+                  par_chord = get_minor_parallel(pitch) + ":min"
                 elif quality == "min":
-                  desc_events[index] = rest + ":maj"
+                  par_chord = get_major_parallel(pitch) + ":maj"
                 elif quality == "maj7":
-                  desc_events[index] = rest + ":min7"
+                  par_chord = get_minor_parallel(pitch) + ":min7"
                 elif quality == "min7":
-                  desc_events[index] = rest + ":maj7"
+                  par_chord = get_major_parallel(pitch) + ":maj7"
+                else:
+                  par_chord = orig_chord
                 # elif quality == "dim":
                 #  desc_events[index] = rest + ":aug"
                 # elif quality == "aug":
                 #  desc_events[index] = rest + ":dim"
+                desc_events[index] = "Chord_" + par_chord
 
           desc_bars = [i for i, event in enumerate(desc_events) if f"{BAR_KEY}_" in event]
           # subtract one since first bar has id == 1

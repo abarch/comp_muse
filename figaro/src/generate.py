@@ -31,6 +31,8 @@ VAE_CHECKPOINT = os.getenv('VAE_CHECKPOINT', None)
 BATCH_SIZE = int(os.getenv('BATCH_SIZE', 1))
 VERBOSE = int(os.getenv('VERBOSE', 2))
 
+CHANGE_CHORD = os.getenv('CHANGE_CHORD', 'False') == 'True'
+
 def reconstruct_sample(model, batch, 
   initial_context=1, 
   output_dir=None, 
@@ -124,7 +126,7 @@ def main():
   dm = model.get_datamodule(midi_files, vae_module=vae_module)
   dm.setup('test')
   midi_files = dm.test_ds.files
-  random.shuffle(midi_files)
+  #random.shuffle(midi_files)
 
   if MAX_N_FILES > 0:
     midi_files = midi_files[:MAX_N_FILES]
@@ -140,7 +142,8 @@ def main():
     description_flavor=model.description_flavor,
     description_options=description_options,
     max_bars=model.context_size,
-    vae_module=vae_module
+    vae_module=vae_module,
+    change_chord=CHANGE_CHORD
   )
 
 
