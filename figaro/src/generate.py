@@ -113,10 +113,10 @@ def main():
     vae_module.cpu()
   else:
     vae_module = None
-    print(os.environ)
 
   model = Seq2SeqModule.load_from_checkpoint(CHECKPOINT)
   model.to(device)
+  print(f"Model is on {device}")
   model.freeze()
   model.eval()
 
