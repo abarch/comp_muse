@@ -192,7 +192,7 @@ class MidiDataset(IterableDataset):
                bar_token_idx=2,
                use_cache=True,
                print_errors=False,
-               change_chord=False):
+               change_chord=None):
     self.files = midi_files
     self.group_bars = group_bars
     self.max_len = max_len
@@ -339,18 +339,18 @@ class MidiDataset(IterableDataset):
             major_tonic_index = (minor_tonic_index + 3) % 12  # Adding 3 to the minor tonic index gives the major tonic index
             return pitch_classes[major_tonic_index]
 
-          if self.change_chord:
+          if self.change_chord is not None and self.change_chord is not "None":
             for index, event in enumerate(desc_events):
               if event.split("_")[0] == "Chord":
                 orig_chord = event.split("_")[1]
                 pitch, quality = orig_chord.split(":")
-                if quality == "maj":
+                if quality == "maj" and self.change_chord in ("to_other", "to_min"):
                   par_chord = get_minor_parallel(pitch) + ":min"
-                elif quality == "min":
-                  par_chord = get_major_parallel(pitch) + ":maj"
-                elif quality == "maj7":
+                elif quality == "maj7" and self.change_chord in ("to_other", "to_min"):
                   par_chord = get_minor_parallel(pitch) + ":min7"
-                elif quality == "min7":
+                elif quality == "min" and self.change_chord in ("to_other", "to_maj"):
+                  par_chord = get_major_parallel(pitch) + ":maj"
+                elif quality == "min7" and self.change_chord in ("to_other", "to_maj"):
                   par_chord = get_major_parallel(pitch) + ":maj7"
                 else:
                   par_chord = orig_chord

@@ -31,7 +31,7 @@ VAE_CHECKPOINT = os.getenv('VAE_CHECKPOINT', None)
 BATCH_SIZE = int(os.getenv('BATCH_SIZE', 1))
 VERBOSE = int(os.getenv('VERBOSE', 2))
 
-CHANGE_CHORD = os.getenv('CHANGE_CHORD', 'False') == 'True'
+CHANGE_CHORD = os.getenv('CHANGE_CHORD', 'None')  # Possible options: "to_other", "to_min", "to_maj"
 
 def reconstruct_sample(model, batch, 
   initial_context=1, 
@@ -160,6 +160,7 @@ def main():
   
   with torch.no_grad():
     for batch in dl:
+      #model.get_loss(batch)
       reconstruct_sample(model, batch, 
         output_dir=output_dir, 
         max_iter=MAX_ITER, 
