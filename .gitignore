@@ -4,5 +4,6 @@ figaro/samples/
 figaro/changed_samples/
 figaro/temp/
 .idea/
+**/.idea/
 
 **/__pycache__/
