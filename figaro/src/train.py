@@ -27,7 +27,7 @@ D_LATENT = int(os.getenv('D_LATENT', 1024))
 CHECKPOINT = os.getenv('CHECKPOINT', None)
 VAE_CHECKPOINT = os.getenv('VAE_CHECKPOINT', None)
 
-BATCH_SIZE = int(os.getenv('BATCH_SIZE', 128))
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', 1))
 TARGET_BATCH_SIZE = int(os.getenv('TARGET_BATCH_SIZE', 512))
 
 EPOCHS = int(os.getenv('EPOCHS', '16'))

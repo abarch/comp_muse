@@ -1,0 +1,16 @@
+context_size: 256
+d_latent: 512
+d_model: 512
+decoder_layers: 6
+description_flavor: both
+description_options: null
+encoder_layers: 4
+intermediate_size: 2048
+lr: 0.0001
+lr_schedule: sqrt_decay
+max_steps: 100000000000000000000
+n_codes: 2048
+n_groups: 16
+num_attention_heads: 8
+use_pretrained_latent_embeddings: true
+warmup_steps: 4000
