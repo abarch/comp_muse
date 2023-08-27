@@ -10,3 +10,4 @@ figaro/temp/
 
 *.ckpt
 *.pth
+*.mid
