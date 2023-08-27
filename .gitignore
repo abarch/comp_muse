@@ -7,3 +7,6 @@ figaro/temp/
 **/.idea/
 
 **/__pycache__/
+
+*.ckpt
+*.pth
