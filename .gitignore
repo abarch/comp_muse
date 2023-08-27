@@ -4,4 +4,4 @@ figaro/samples/
 figaro/changed_samples/
 figaro/temp/
 
-
+**/__pycache__/**
