@@ -3,5 +3,7 @@ figaro/checkpoints/
 figaro/samples/
 figaro/changed_samples/
 figaro/temp/
+.idea/**
 
 **/__pycache__/**
+**/__pycache__/*
