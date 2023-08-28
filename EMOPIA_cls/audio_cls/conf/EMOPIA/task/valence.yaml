@@ -1,0 +1,3 @@
+labels: ["HV","LV"]
+cls_type: "V"
+n_class: 2

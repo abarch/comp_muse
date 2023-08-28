@@ -1,0 +1,3 @@
+labels: ["H","L"]
+cls_type: "HL"
+num_of_dim: 2
