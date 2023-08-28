@@ -3,6 +3,18 @@ figaro/checkpoints/
 figaro/samples/
 figaro/changed_samples/
 figaro/temp/
+
+EMOPIA_cls/dataset/magenta_midi/
+EMOPIA_cls/dataset/magenta_midi_test/
+EMOPIA_cls/dataset/matlab_feature/
+EMOPIA_cls/dataset/remi_key_midi/
+EMOPIA_cls/dataset/remi_midi/
+EMOPIA_cls/dataset/remi_midi_test/
+EMOPIA_cls/dataset/resample22050/
+EMOPIA_cls/dataset/remi+/
+EMOPIA_cls/midi_cls/lightning_logs/
+best_weight/
+
 .idea/
 **/.idea/
 
