@@ -95,7 +95,7 @@ def main(args) -> None:
     checkpoint_callback = get_checkpoint_callback(args, save_path)
     early_stop_callback = get_early_stop_callback(args)
 
-    trainer = Tra,iner(
+    trainer = Trainer(
                         max_epochs= args.max_epochs,
                         gpus= [args.gpus],
                         strategy= args.distributed_backend,
