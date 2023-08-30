@@ -89,40 +89,6 @@ def reconstruct_sample(model, batch,
     return events
 
 
-def midi_to_remi_plus():
-
-  output_dir = "./data/remi+"
-  if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-
-  print(f"Saving generated files to: {output_dir}")
-
-  vae_module = None
-
-  midi_files = glob.glob(os.path.join("./data", '**/*.mid'), recursive=True)
-
-  description_options = None
-
-  dataset = MidiDataset(
-    midi_files,
-    max_len=-1,
-    description_options=description_options,
-    max_bars=2048,
-    max_positions=2048,
-    vae_module=vae_module
-  )
-
-  coll = SeqCollator(context_size=-1)
-  dl = DataLoader(dataset, batch_size=1, collate_fn=coll)
-
-
-  with torch.no_grad():
-    for batch in dl:
-      remi_p = batch["input_ids"].squeeze().tolist()
-      remi_p_fn = os.path.join(output_dir, batch["files"][0].replace(".mid",".pt"))
-      torch.save(remi_p, remi_p_fn)
-
-
 def main():
     if MAKE_MEDLEYS:
         max_bars = N_MEDLEY_PIECES * N_MEDLEY_BARS
