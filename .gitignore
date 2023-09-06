@@ -17,6 +17,7 @@ best_weight/
 
 .idea/
 **/.idea/
+**/*.mid
 
 **/__pycache__/
 
