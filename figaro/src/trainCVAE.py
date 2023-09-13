@@ -14,7 +14,7 @@ save_name = "vae_hidden"
 encoding_size = [512, 128, 32, 16]
 decoding_size = [16, 32, 128, 512]
 
-model = VAE(encoding_size, 8, decoding_size, conditional=True, num_labels=4)
+model = VAE(encoding_size, 8, decoding_size, conditional=True, num_labels=dataset.num_labels())
 model.to(device)
 
 # define hyperparameter

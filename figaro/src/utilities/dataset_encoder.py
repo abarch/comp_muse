@@ -44,4 +44,6 @@ class EncoderDataSet(Dataset):
         # return (x, y)
         return hidden[i], torch.tensor(i_class)
 
+    def num_labels(self):
+        return len(self.files)
 
