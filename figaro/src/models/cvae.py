@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import pytorch_lightning as pl
 
-class VAE(nn.Module):
+class VAE(pl.LightningModule):
 
     def __init__(self, encoder_layer_sizes, latent_size, decoder_layer_sizes,
                  conditional=False, num_labels=0):

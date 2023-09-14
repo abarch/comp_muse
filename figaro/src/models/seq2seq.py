@@ -8,6 +8,8 @@ from datasets import MidiDataModule
 from vocab import RemiVocab, DescriptionVocab
 from constants import PAD_TOKEN, EOS_TOKEN, BAR_KEY, POSITION_KEY
 
+import numpy.random as rnd
+
 import transformers
 from transformers import (
     BertConfig,
@@ -317,8 +319,6 @@ class Seq2SeqModule(pl.LightningModule):
 
         batch_size, curr_len = batch['input_ids'].shape
 
-        i = curr_len - 1
-
         x = batch['input_ids']
         bar_ids = batch['bar_ids']
         position_ids = batch['position_ids']
@@ -422,6 +422,89 @@ class Seq2SeqModule(pl.LightningModule):
             if torch.all(is_done):
                 break
         # print()
+
+        return {
+            'sequences': x,
+            'bar_ids': bar_ids,
+            'position_ids': position_ids
+        }
+
+    def sample_cVAE(self,
+                    cVAE,
+                    generate_class,
+                    max_length=256,
+                    max_bars=-1,
+                    temp=0.8,
+                    pad_token=PAD_TOKEN,
+                    eos_token=EOS_TOKEN,
+                    verbose=0,
+                    ):
+        pad_token_id = self.vocab.to_i(pad_token)
+        eos_token_id = self.vocab.to_i(eos_token)
+
+        x = torch.tensor([[2]], dtype=torch.int64)
+        bar_ids = torch.tensor([[0]], dtype=torch.int64)
+        position_ids = torch.tensor([[0]], dtype=torch.int32)
+
+        batch_size = 1 # fixed. We only want to generate one batch at a time. Change this later?
+        is_done = torch.zeros(batch_size, dtype=torch.bool)
+
+        curr_bars = torch.zeros(batch_size, device=self.device).fill_(-1)
+
+        for i in range(0, max_length):
+            x_ = x[:, -self.context_size:].to(self.device)
+            bar_ids_ = bar_ids[:, -self.context_size:].to(self.device)
+            position_ids_ = position_ids[:, -self.context_size:].to(self.device)
+
+            next_bars = bar_ids_[:, 0]
+            bars_changed = not (next_bars == curr_bars).all()
+            curr_bars = next_bars
+
+            # sample from the latent space
+            if bars_changed:
+                latent_size = cVAE.latent_size
+                latent_sample = torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float)
+
+                encoder_hidden_states = torch.zeros((1, 256, 512), dtype=torch.float)
+                for j in range(256):
+                    encoder_hidden_states[0,j,:] = cVAE.decoder(latent_sample[0,j,:], generate_class)
+
+            logits = self.decode(x_, bar_ids=bar_ids_, position_ids=position_ids_,
+                                 encoder_hidden_states=encoder_hidden_states)
+
+            idx = min(self.context_size - 1, i)
+            logits = logits[:, idx] / temp
+
+            pr = F.softmax(logits, dim=-1)
+            pr = pr.view(-1, pr.size(-1))
+
+            next_token_ids = torch.multinomial(pr, 1).view(-1).to(x.device)
+            next_tokens = self.vocab.decode(next_token_ids)
+            if verbose:
+                print(f"{i + 1}/{max_length}", next_tokens)
+
+            next_bars = torch.tensor([1 if f'{BAR_KEY}_' in token else 0 for token in next_tokens], dtype=torch.int)
+            next_bar_ids = bar_ids[:, i].clone() + next_bars
+
+            next_positions = [f"{POSITION_KEY}_0" if f'{BAR_KEY}_' in token else token for token in next_tokens]
+            next_positions = [int(token.split('_')[-1]) if f'{POSITION_KEY}_' in token else None for token in
+                              next_positions]
+            next_positions = [pos if next_pos is None else next_pos for pos, next_pos in
+                              zip(position_ids[:, i], next_positions)]
+            next_position_ids = torch.tensor(next_positions, dtype=torch.int)
+
+            is_done.masked_fill_((next_token_ids == eos_token_id).all(dim=-1), True)
+            next_token_ids[is_done] = pad_token_id
+            if max_bars > 0:
+                is_done.masked_fill_(next_bar_ids >= max_bars + 1, True)
+
+            x = torch.cat([x, next_token_ids.clone().unsqueeze(1)], dim=1)
+            bar_ids = torch.cat([bar_ids, next_bar_ids.unsqueeze(1)], dim=1)
+            position_ids = torch.cat([position_ids, next_position_ids.unsqueeze(1)], dim=1)
+
+            if torch.all(is_done):
+                break
+            # print()
 
         return {
             'sequences': x,

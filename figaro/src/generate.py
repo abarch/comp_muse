@@ -2,7 +2,6 @@ import os
 import glob
 import time
 import torch
-import random
 from torch.utils.data import DataLoader
 
 from models.vae import VqVaeModule
@@ -15,8 +14,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 MODEL = os.getenv('MODEL', '')
 
-ROOT_DIR = os.getenv('ROOT_DIR', './lmd_full')
-OUTPUT_DIR = os.getenv('OUTPUT_DIR', './samples')
+ROOT_DIR = os.getenv('ROOT_DIR', './music_samples')
+OUTPUT_DIR = os.getenv('OUTPUT_DIR', './generated')
 MAX_N_FILES = int(float(os.getenv('MAX_N_FILES', -1)))
 MAX_ITER = int(os.getenv('MAX_ITER', 16_000))
 MAX_BARS = int(os.getenv('MAX_BARS', 32))

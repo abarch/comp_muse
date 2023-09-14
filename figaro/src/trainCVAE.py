@@ -40,12 +40,14 @@ loss_training = []
 
 for epoch in range(epochs):
     loss_epoch = []
+    print(f'starting with epoch {epoch + 1}')
     for iteration, (x, y) in enumerate(data_loader):
         x, y = x.to(device), y.to(device)
 
         recon_x, mean, log_var, z = model(x, y)
 
-        loss = loss_fn(recon_x, x, mean, log_var)
+        # TODO: Check the loss! (why do only negative Values occur)
+        loss = -loss_fn(recon_x, x, mean, log_var)
 
         loss_epoch.append(loss.item())
 
@@ -54,9 +56,10 @@ for epoch in range(epochs):
 
         optimizer.step()
     loss_training.append(loss_epoch)
+    print(f'average loss: {np.mean(loss_epoch)}')
 
 loss_arr = np.array(loss_training)
 with open(f'{save_name}_loss.npy', 'wb') as f:
     np.save(f, loss_arr)
 
-torch.save(model.state_dict(), f'{save_name}_loss.npy')
+torch.save(model.state_dict(), f'{save_name}_model.ckpt')
