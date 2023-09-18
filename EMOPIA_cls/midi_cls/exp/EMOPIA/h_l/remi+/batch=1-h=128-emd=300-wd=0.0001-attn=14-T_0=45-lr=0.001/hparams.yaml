@@ -19,7 +19,7 @@ hparams:
   lr: 0.001
   weight_decay: 0.0001
   T_0: 45
-  max_epochs: 200
+  max_epochs: 1
   gpus: 0
   distributed_backend: dp
   deterministic: true

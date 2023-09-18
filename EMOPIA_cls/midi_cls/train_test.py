@@ -2,6 +2,7 @@ from argparse import ArgumentParser, Namespace
 from pathlib import Path
 import json
 import os
+import shutil
 import torch
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning import Trainer, seed_everything
@@ -122,6 +123,15 @@ def main(args) -> None:
 
     OmegaConf.save(config=fix_config, f= Path(save_path, "hparams.yaml"))
 
+    if args.save_best_weight:
+        best_save_path = f"../best_weight/{args.midi}/{args.task}/"
+        os.makedirs(best_save_path, exist_ok=True)
+        shutil.copy(Path(save_path, "hparams.yaml"), Path(best_save_path, "hparams.yaml"))
+        shutil.copy(Path(save_path, "results_last.json"), Path(best_save_path, "results_last.json"))
+        shutil.copy(Path(save_path, "last.ckpt"), Path(best_save_path, "best.ckpt"))
+
+
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--dataset", default="EMOPIA", type=str)
@@ -144,6 +154,8 @@ if __name__ == "__main__":
     parser.add_argument("--deterministic", default=True, type=str2bool)
     parser.add_argument("--benchmark", default=False, type=str2bool)
     parser.add_argument("--reproduce", default=True, type=str2bool)
+
+    parser.add_argument("--save_best_weight", default=False, type=str2bool)
 
     args = parser.parse_args()
     main(args)

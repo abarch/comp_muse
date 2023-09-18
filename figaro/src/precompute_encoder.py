@@ -138,8 +138,9 @@ def main():
             os.makedirs(output_dir, exist_ok=True)
             for enc, file in zip(encoder_hidden, batch['files']):
                 new_file = file.replace(".mid", ".pt")
-                new_file = os.path.join(new_file[0:2], new_file[4:])
+                new_file = os.path.join(new_file[0:2], new_file[3:])
                 file_path = os.path.join(output_dir, new_file)
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
                 torch.save(enc, file_path)
 
 
