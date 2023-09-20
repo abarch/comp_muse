@@ -102,6 +102,9 @@ def predict(args) -> None:
             audio_sample[i] = torch.Tensor(model_input[:,i*sample_length:(i+1)*sample_length])
         prediction = model(audio_sample.to(args.cuda))
         prediction = prediction.mean(0,False)
+    elif args.types == "remi+":
+        model_input = torch.LongTensor(torch.load(args.file_path)).unsqueeze(0)
+        prediction = model(model_input.to(args.cuda))
     
     pred_label = label_list[prediction.squeeze(0).max(0)[1].detach().cpu().numpy()]
     pred_value = prediction.squeeze(0).detach().cpu().numpy()
@@ -113,8 +116,8 @@ def predict(args) -> None:
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--types", default="midi_like", type=str, choices=["midi_like", "remi", "wav"])
-    parser.add_argument("--task", default="ar_va", type=str, choices=["ar_va", "arousal", "valence"])
+    parser.add_argument("--types", default="remi+", type=str, choices=["midi_like", "remi", "wav", "remi+"])
+    parser.add_argument("--task", default="ar_va", type=str, choices=["ar_va", "arousal", "valence", "h_l"])
     parser.add_argument("--file_path", default="./dataset/sample_data/Sakamoto_MerryChristmasMr_Lawrence.mid", type=str)
     parser.add_argument('--cuda', default='cuda:0', type=str)
     args = parser.parse_args()
