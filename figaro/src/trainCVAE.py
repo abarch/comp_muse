@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 dataset = EncoderDataSet("./samples/encoder_hidden")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-save_name = "vae_hidden"
+save_name = "training_saves/vae_hidden"
 
 # model parameter
 encoding_size = [512, 128, 32, 16]
