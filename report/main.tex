@@ -99,14 +99,15 @@ The model is build as a combination of a bidirectional LSTM and a self-attention
 
 For our work this classifier can be repurposed but first has to be adapted to REMI+ in order to do so.
 
-\section{IMU}
-To generate music based on environment, we have to collect environmental data and transform them into a format that can be used to guide the generation process.
-\subsection{Collection of Raw Data}
-We use an Arduino board to collect raw environmental data. Arduino is an open-source electronics platform based on easy-to-use hardware and software. \cite{arduino} It is compatible with Linux, Mac and Windows system. Arduino boards are hardware that is able to read inputs from various sensors and turn them into outputs. You can upload scripts to the microcontroller to control the behavior of an Arduino board.
+\section{Arduino board with integrated IMU}
+To generate music based on an environment, we have to collect environmental data and transform them into a format that can be used to guide the generation process.
 
-As for this project, we use the Arduino Nano 33 BLE Sense Rev2.\cite{arduinoBLE}  It is equipped with gyroscope, microphone and sensors for light, barometric pressure and temperature. It can be connected to a PC via Bluetooth Low Energy so that the outputs produced by this board can be read and recorded for further use.
+\subsection{Collection of raw data}
+We use an Arduino board to collect raw environmental data. Arduino is an open-source electronics platform based on easy-to-use hardware and software \cite{arduino}. It is compatible with Linux, Mac and Windows systems. Arduino boards are able to read inputs from various sensors and turn them into outputs. It is possible to upload scripts to the microcontroller to control the behavior of an Arduino board.
 
-We first configure the Arduino board to enable transmissions between the board and the PC. We use a sketch published by Arduino with modifications for the Rev2 hardware. \cite{arduinoSketch} After uploading the sketch to the Arduino board using Arduino Software IDE, the board will send out sensor data on different channels.
+For this project the Arduino Nano 33 BLE Sense Rev2 is used \cite{arduinoBLE}. It is equipped with an IMU (Inertial Measurement Unit) featuring an accelerometer, a gyroscope and a magnetometer, as well as with a microphone and sensors for measuring light, barometric pressure and temperature. The board can be connected to a computer via Bluetooth Low Energy so that the produced outputs can be read and recorded for further use.
+
+The Arduino board was configured by us to enable transmissions between the board and a computer. We use a sketch published by Arduino with modifications for the Rev2 hardware \cite{arduinoSketch}. After uploading the sketch to the Arduino board using the Arduino Software IDE, the board is sending out sensor data on different channels.
 
 \begin{lstlisting}[language=C, frame=single, breaklines=true]
 BLEService                     service                       (BLE_SENSE_UUID("0000"));
@@ -126,7 +127,8 @@ BLECharacteristic              microphoneLevelCharacteristic (BLE_SENSE_UUID("50
 BLECharacteristic              rgbLedCharacteristic          (BLE_SENSE_UUID("6001"), BLERead | BLEWrite, 3 * sizeof(byte)); // Array of 3 bytes, RGB
 \end{lstlisting}
 
-The output of the Arduino board are collected using a Python script. With the async and the bleak library, we can search for Bluetooth devices and read the data transmitted by them using \texttt{BleakScanner.discover()}. After a successful connection, we can search for a specific channel to read out data from a certain sensor. A showcase of this process can be found at our GitHub repository. \cite{getGyro} The received data are written into files at last.
+The output of the Arduino board is collected using a Python script. With the async and the bleak library, we can search for Bluetooth devices and read the data transmitted by them using \texttt{BleakScanner.discover()}. After a successful connection, we can search for a specific channel to read out data from a certain sensor. A showcase of this process can be found at our GitHub repository \cite{getGyro}. The received data are written into files at last.
+
 \begin{lstlisting}[language=Python, frame=single, breaklines=true]
 async def main():
     devices = await BleakScanner.discover()
@@ -151,8 +153,8 @@ async def main():
         print("Gyroscope not found!")    
 \end{lstlisting}
 
-\subsection{Processing of the Data}
-A first concept is to record a specific sensor value, e. g. gyroscope angles for the X, Y and Z axis, for a period of time. The mean and standard deviation values can be used to determine whether the Arduino board is in movement, indicating a higher activity in the environment. Further sensor data can be collected to support or modify the result, like a high velocity detected by the accelerometer indicates high energy, while low volume detected by the microphone suggests a rather quiet and relaxed environment. These values will be calculated together which results in a certain emotion for the generated music.
+\subsection{Processing of the data}
+A first concept is to record a specific sensor value for a certain period of time, e.g. the gyroscope angles for the X, Y and Z axis. The mean and standard deviation values can be used to determine whether the Arduino board is in movement, indicating a higher activity in the environment. Further sensor data can be collected to support or modify the results. For example a high velocity detected by the accelerometer indicates high energy, while low volume detected by the microphone suggests a rather quiet and relaxed environment. These values are included in the computation, which results in a certain emotion for the to be generated music.
 
 
 \section{Discussion}
