@@ -3,7 +3,6 @@ import os
 import numpy as np
 from torch.utils.data import Dataset
 
-
 class EncoderDataSet(Dataset):
     def __init__(self, image_base_dir, transformer=None, target_transformer=None):
         count = -1 # the first entry has index 0

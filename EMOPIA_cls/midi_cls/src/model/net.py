@@ -3,8 +3,7 @@ torch.manual_seed(123)
 import torch.nn as nn
 import torch
 import torch.nn as nn
-from .ops import ConvolutionLayer, MaxOverTimePooling, Conv1d_mp, BiLSTM, ConvBlock, SelfAttention
-from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence, PackedSequence
+from .ops import SelfAttention
 
 class SAN(nn.Module):
     def __init__(self, num_of_dim, vocab_size, embedding_size, r, lstm_hidden_dim=128, da=128, hidden_dim=256) -> None:

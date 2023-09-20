@@ -1,14 +1,11 @@
-
-
 import torch
-
 import os
 import glob
-
 import pytorch_lightning as pl
 
 from models.seq2seq import Seq2SeqModule
 from models.vae import VqVaeModule
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

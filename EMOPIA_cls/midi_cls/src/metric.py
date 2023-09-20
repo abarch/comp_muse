@@ -1,6 +1,3 @@
-import torch.nn as nn
-import numpy as np
-
 def accuracy(source, target):
     source = source.max(1)[1].long()
     target = target.long()

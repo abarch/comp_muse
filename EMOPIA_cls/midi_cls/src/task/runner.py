@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
-import numpy as np 
-from omegaconf import DictConfig
 from pytorch_lightning import LightningModule
-from torch.optim import SGD, Adam
+from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts
 
 from ..metric import accuracy

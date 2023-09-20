@@ -12,7 +12,6 @@ from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 from src.model.net import SAN
 from src.task.pipeline import PEmoPipeline
 from src.task.runner import Runner
-import wandb
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):

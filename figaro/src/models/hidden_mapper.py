@@ -1,8 +1,7 @@
 import torch.optim
 import torch.nn as nn
-import torch.nn.functional as F
 
-from constants import PAD_TOKEN, EOS_TOKEN, BAR_KEY, POSITION_KEY
+from constants import PAD_TOKEN
 
 
 class HiddenMapper(nn.Module):

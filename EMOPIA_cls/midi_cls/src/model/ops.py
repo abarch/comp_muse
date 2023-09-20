@@ -3,8 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Tuple
 
-
-
 class SelfAttention(nn.Module):
     """SelfAttention class"""
     def __init__(self, input_dim: int, da: int, r: int) -> None:

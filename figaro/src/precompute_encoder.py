@@ -2,14 +2,12 @@ import os
 import glob
 import time
 import torch
-import random
 from torch.utils.data import DataLoader
 
 from models.vae import VqVaeModule
 from models.seq2seq import Seq2SeqModule
 from datasets import MidiDataset, SeqCollator
 from utils import medley_iterator
-from input_representation import remi2midi
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

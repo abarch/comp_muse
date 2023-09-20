@@ -1,13 +1,8 @@
 import os
-import glob
 import pickle
 import numpy as np
 import miditoolkit
 import collections
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # ================================================== #  
 #  Configuration                                     #
