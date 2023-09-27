@@ -439,6 +439,12 @@ class Seq2SeqModule(pl.LightningModule):
                     eos_token=EOS_TOKEN,
                     verbose=0,
                     ):
+        r"""
+        cVAE:
+
+        generate_class:
+            class Label for the
+        """
         pad_token_id = self.vocab.to_i(pad_token)
         eos_token_id = self.vocab.to_i(eos_token)
 
@@ -446,12 +452,13 @@ class Seq2SeqModule(pl.LightningModule):
         bar_ids = torch.tensor([[0]], dtype=torch.int64)
         position_ids = torch.tensor([[0]], dtype=torch.int32)
 
-        batch_size = 1 # fixed. We only want to generate one batch at a time. Change this later?
+        batch_size = 1  # fixed. We only want to generate one batch at a time. Change this later?
         is_done = torch.zeros(batch_size, dtype=torch.bool)
 
         curr_bars = torch.zeros(batch_size, device=self.device).fill_(-1)
 
         for i in range(0, max_length):
+            # look-back fot the decoder of figaro
             x_ = x[:, -self.context_size:].to(self.device)
             bar_ids_ = bar_ids[:, -self.context_size:].to(self.device)
             position_ids_ = position_ids[:, -self.context_size:].to(self.device)
@@ -460,11 +467,21 @@ class Seq2SeqModule(pl.LightningModule):
             bars_changed = not (next_bars == curr_bars).all()
             curr_bars = next_bars
 
-            # sample from the latent space
+            # sample from the latent space if bars changed
             if bars_changed:
+                # !!!
+                # in this condition we only use the c-VAE
+                # out of this if-condition the c-VAE is NOT used
+                # !!!
                 latent_size = cVAE.latent_size
+                # sampling for the latent space of the c_VAE
                 latent_sample = torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float)
+                # the shape is (#batches, #tokens_per_batch (max), latent_size of the cVAE)
+                # latent_sample[a, b, c] ist ein normalverteilter Eintrag
 
+                # TODO: automate the pulling of the dimension for the hidden state
+                # the hidden state has the shape (#batches, #token, dimension_per_token)
+                # the encoder_hidden_state is for FIGARO, sampled from the c-VAE
                 encoder_hidden_states = torch.zeros((1, 256, 512), dtype=torch.float)
                 for j in range(256):
                     encoder_hidden_states[0,j,:] = cVAE.decoder(latent_sample[0,j,:], generate_class)
@@ -472,6 +489,7 @@ class Seq2SeqModule(pl.LightningModule):
             logits = self.decode(x_, bar_ids=bar_ids_, position_ids=position_ids_,
                                  encoder_hidden_states=encoder_hidden_states)
 
+            # below this line the logits are "transformed" into the next remi-token. This is
             idx = min(self.context_size - 1, i)
             logits = logits[:, idx] / temp
 

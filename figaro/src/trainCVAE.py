@@ -5,7 +5,7 @@ from models.cvae import VAE  # this VAE is actually a cVAE
 
 from torch.utils.data import DataLoader
 
-dataset = EncoderDataSet("./samples/figaro/encoder_hidden")
+dataset = EncoderDataSet("./samples/encoder_hidden")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 save_name = "training_saves/vae_hidden"
