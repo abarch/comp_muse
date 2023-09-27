@@ -12,7 +12,6 @@ from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 from src.model.net import SAN
 from src.task.pipeline import PEmoPipeline
 from src.task.runner import Runner
-import wandb
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -142,7 +141,7 @@ if __name__ == "__main__":
     parser.add_argument("--lstm_hidden_dim", default=128, type=float)
     parser.add_argument("--embedding_size", default=300, type=float)
     # pipeline
-    parser.add_argument("--batch_size", default=1, type=float)
+    parser.add_argument("--batch_size", default=1, type=int)
     parser.add_argument("--num_workers", default=1, type=float)
     # runner
     parser.add_argument("--lr", default=1e-3, type=float)

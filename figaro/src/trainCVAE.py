@@ -1,11 +1,12 @@
 import numpy as np
 import torch
 from utilities.dataset_encoder import EncoderDataSet
-from models.cvae import VAE  # this VAE is actually a cVAE
-
 from torch.utils.data import DataLoader
 
-dataset = EncoderDataSet("./samples/encoder_hidden")
+from models.cvae import VAE  # this VAE is actually a cVAE
+
+
+dataset = EncoderDataSet("./samples/figaro/encoder_hidden", classes=["Q1", "Q2", "Q3", "Q4"])
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 save_name = "training_saves/vae_hidden"
@@ -30,24 +31,33 @@ data_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
 
 # loss
 def loss_fn(recon_x, x, mean, log_var):
-    BCE = torch.nn.functional.binary_cross_entropy(
-        recon_x, x, reduction='sum')
-    KLD = -0.5 * torch.sum(1 + log_var - mean.pow(2) - log_var.exp())
+    huber = torch.nn.functional.huber_loss(
+        recon_x, x, reduction='mean')
+    KLD = -0.5 * torch.mean(1 + log_var - mean.pow(2) - log_var.exp())
 
-    return (BCE + KLD) / x.size(0)
+    return huber + KLD
 
 loss_training = []
 
+sample_save_train = []
+
 for epoch in range(epochs):
     loss_epoch = []
+    sampling_save = []
     print(f'starting with epoch {epoch + 1}')
     for iteration, (x, y) in enumerate(data_loader):
         x, y = x.to(device), y.to(device)
 
         recon_x, mean, log_var, z = model(x, y)
 
+        sampling_save.append((
+            mean.copy().detach().cpu().numpy(),
+            log_var.copy().detach().cpu().numpy(),
+            y.copy().detach().cpu().numpy()
+        ))
+
         # TODO: Check the loss! (why do only negative Values occur)
-        loss = -loss_fn(recon_x, x, mean, log_var)
+        loss = loss_fn(recon_x, x, mean, log_var)
 
         loss_epoch.append(loss.item())
 

@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import numpy as np
 import torch
 from omegaconf import OmegaConf
 
@@ -37,10 +38,10 @@ assert OUTPUT_DIR is not None
 verbose = VERBOSE
 output_dir = OUTPUT_DIR
 file = OUTPUT_FILE_NAME
-c = torch.tensor(CLASS_TO_GENERATE, dtype=torch.int64)
+class_to_generate = torch.tensor(CLASS_TO_GENERATE, dtype=torch.int64)
 
 def generate_from_thin_air():
-    model = Seq2SeqModule.load_from_checkpoint(CHECKPOINT)
+    model = Seq2SeqModule.load_from_checkpoint(CHECKPOINT).to(device)
 
     encoding_size = [512, 128, 32, 16]
     decoding_size = [16, 32, 128, 512]
@@ -49,48 +50,64 @@ def generate_from_thin_air():
     # cVAE = VAE.load_from_checkpoint(CHECKPOINT_CVAE)
     cVAE = VAE(encoding_size, 8, decoding_size, conditional=True, num_labels=4)
     cVAE.load_state_dict(torch.load(CHECKPOINT_CVAE))
+    if class_to_generate >= 0 and class_to_generate <= 3:
+        classes = [class_to_generate]
+    elif CLS_TASK == "ar_va":
+        classes = [0] * 5 + [1] * 5 + [2] * 5 + [3] * 5
+    elif CLS_TASK == "h_l":
+        classes = [2] * 5 + [0] * 5
 
-    sample = model.sample_cVAE(cVAE, c)
+    classes = torch.tensor(classes, dtype=torch.int64)
+    correct = [False]*len(classes)
+    for num, c in enumerate(classes):
+        sample = model.sample_cVAE(cVAE, c, max_length=2000)
 
-    xs_hat = sample['sequences'].detach().cpu()
+        xs_hat = sample['sequences'].detach().cpu()
 
-    if CLASSIFY:
-        config_path = Path("..", "EMOPIA_cls", "best_weight", CLS_TYPES, CLS_TASK, "hparams.yaml")
-        checkpoint_path = Path("..", "EMOPIA_cls", "best_weight", CLS_TYPES, CLS_TASK, "best.ckpt")
-        config = OmegaConf.load(config_path)
-        label_list = list(config.task.labels)
+        if CLASSIFY:
+            config_path = Path("..", "EMOPIA_cls", "best_weight", CLS_TYPES, CLS_TASK, "hparams.yaml")
+            checkpoint_path = Path("..", "EMOPIA_cls", "best_weight", CLS_TYPES, CLS_TASK, "best.ckpt")
+            config = OmegaConf.load(config_path)
+            label_list = list(config.task.labels)
 
-        emopia_cls_model = SAN(
-            num_of_dim=config.task.num_of_dim,
-            vocab_size=config.midi.pad_idx + 1,
-            lstm_hidden_dim=config.hparams.lstm_hidden_dim,
-            embedding_size=config.hparams.embedding_size,
-            r=config.hparams.r)
-        state_dict = torch.load(checkpoint_path)
-        new_state_map = {model_key: model_key.split("model.")[1] for model_key in state_dict.get("state_dict").keys()}
-        new_state_dict = {new_state_map[key]: value for (key, value) in state_dict.get("state_dict").items() if
-                          key in new_state_map.keys()}
-        emopia_cls_model.load_state_dict(new_state_dict)
-        emopia_cls_model.eval()
-        prediction = emopia_cls_model(xs_hat)
-        pred_label = label_list[prediction.squeeze(0).max(0)[1].detach().cpu().numpy()]
-        pred_value = prediction.squeeze(0).detach().cpu().numpy()
-        print("========")
-        print("Piece is emotion", pred_label)
-        print("Inference values: ", pred_value)
+            emopia_cls_model = SAN(
+                num_of_dim=config.task.num_of_dim,
+                vocab_size=config.midi.pad_idx + 1,
+                lstm_hidden_dim=config.hparams.lstm_hidden_dim,
+                embedding_size=config.hparams.embedding_size,
+                r=config.hparams.r)
+            state_dict = torch.load(checkpoint_path)
+            new_state_map = {model_key: model_key.split("model.")[1] for model_key in state_dict.get("state_dict").keys()}
+            new_state_dict = {new_state_map[key]: value for (key, value) in state_dict.get("state_dict").items() if
+                              key in new_state_map.keys()}
+            emopia_cls_model.load_state_dict(new_state_dict)
+            emopia_cls_model.eval()
+            prediction = emopia_cls_model(xs_hat)
+            pred_label = label_list[prediction.squeeze(0).max(0)[1].detach().cpu().numpy()]
+            pred_value = prediction.squeeze(0).detach().cpu().numpy()
+            print("========")
+            print(f"Emotion: Q{c+1}, classified as {pred_label}")
+            print("Inference values: ", pred_value)
+            if CLS_TASK == "ar_va":
+                if c+1 == np.argmax(pred_value):
+                    correct[num] = True
+            elif CLS_TASK == "h_l":
+                if (c == 0 and np.argmax(pred_value) == 0) or (c==2 and np.argmax(pred_value) == 1):
+                    correct[num] = True
 
-    events_hat = [model.vocab.decode(x) for x in xs_hat]
-    pms_hat = []
+        events_hat = [model.vocab.decode(x) for x in xs_hat]
+        pms_hat = []
 
-    for rec_hat in events_hat:
-        pm_hat = remi2midi(rec_hat)
-        pms_hat.append(pm_hat)
+        for rec_hat in events_hat:
+            pm_hat = remi2midi(rec_hat)
+            pms_hat.append(pm_hat)
 
-    if output_dir:
-        for i, pm_hat in enumerate(pms_hat):
-            if verbose:
-                print(f"Saving to {output_dir}/{file}_{i}.mid")
-            pm_hat.write(os.path.join(output_dir, file + '.mid'))
+        if output_dir:
+            for i, pm_hat in enumerate(pms_hat):
+                if verbose:
+                    print(f"Saving to {file}_class={c+1}_{num}_{i}.mid")
+                pm_hat.write(os.path.join(output_dir, f"{file}_class={c+1}_{num}_{i}.mid"))
+    print(f"Correct: Accuracy={sum(correct)/len(correct)}")
 
 if __name__ == '__main__':
     generate_from_thin_air()

@@ -1,12 +1,9 @@
 import os
 import copy
 import numpy as np
-import multiprocessing as mp
 
-import miditoolkit 
-from miditoolkit.midi import parser as mid_parser
-from miditoolkit.pianoroll import parser as pr_parser
-from miditoolkit.midi.containers import Marker, Instrument, TempoChange
+import miditoolkit
+from miditoolkit.midi.containers import Marker
 
 from chorder import Dechorder
 

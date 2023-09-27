@@ -1,18 +1,12 @@
 import os
-import glob
 import copy
-import argparse
 import pickle
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import miditoolkit
-from miditoolkit.midi import parser as mid_parser
-from miditoolkit.pianoroll import parser as pr_parser
-from miditoolkit.midi.containers import Marker, Instrument, TempoChange
+from miditoolkit.midi.containers import Marker
 import collections
 from chorder import Dechorder
-from datetime import datetime
 
 
 # ================================================== #  

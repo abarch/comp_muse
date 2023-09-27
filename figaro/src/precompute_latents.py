@@ -1,4 +1,3 @@
-
 import os
 import glob
 import pickle
@@ -9,6 +8,7 @@ from torch.utils.data.dataloader import DataLoader
 from models.vae import VqVaeModule
 from constants import MASK_TOKEN
 from datasets import MidiDataset, SeqCollator
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

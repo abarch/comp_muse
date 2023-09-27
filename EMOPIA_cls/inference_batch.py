@@ -2,11 +2,10 @@
 import os
 import glob
 import pandas as pd
-import ipdb
 from inference import predict
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import OmegaConf
 from pathlib import Path
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser
 from sklearn.metrics import accuracy_score
 
 

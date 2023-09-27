@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import torchaudio
-import pandas as pd
 import torch
 from tqdm import tqdm
 import pickle

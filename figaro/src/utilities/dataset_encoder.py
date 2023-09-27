@@ -3,9 +3,8 @@ import os
 import numpy as np
 from torch.utils.data import Dataset
 
-
 class EncoderDataSet(Dataset):
-    def __init__(self, image_base_dir, transformer=None, target_transformer=None):
+    def __init__(self, image_base_dir, classes=None, transformer=None, target_transformer=None):
         count = -1 # the first entry has index 0
         files = []
         sep = os.sep
@@ -16,7 +15,11 @@ class EncoderDataSet(Dataset):
                 continue
 
             path, _, new_files = x
-            files.append([path + sep + file for file in new_files])
+            if classes is not None:
+                if path[-2:] in classes:
+                    files.append([path + sep + file for file in new_files])
+            else:
+                files.append([path + sep + file for file in new_files])
         self.files = files
 
     def __len__(self):
