@@ -457,6 +457,12 @@ class Seq2SeqModule(pl.LightningModule):
 
         curr_bars = torch.zeros(batch_size, device=self.device).fill_(-1)
 
+        latent_size = cVAE.latent_size
+        # sampling for the latent space of the c_VAE
+        latent_sample = torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float)
+        # the shape is (#batches, #tokens_per_batch (max), latent_size of the cVAE)
+        # latent_sample[a, b, c] ist ein normalverteilter Eintrag
+
         for i in range(0, max_length):
             # look-back fot the decoder of figaro
             x_ = x[:, -self.context_size:].to(self.device)
@@ -473,11 +479,7 @@ class Seq2SeqModule(pl.LightningModule):
                 # in this condition we only use the c-VAE
                 # out of this if-condition the c-VAE is NOT used
                 # !!!
-                latent_size = cVAE.latent_size
-                # sampling for the latent space of the c_VAE
-                latent_sample = torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float)
-                # the shape is (#batches, #tokens_per_batch (max), latent_size of the cVAE)
-                # latent_sample[a, b, c] ist ein normalverteilter Eintrag
+                latent_sample = latent_sample + torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float) * 0.1
 
                 # TODO: automate the pulling of the dimension for the hidden state
                 # the hidden state has the shape (#batches, #token, dimension_per_token)

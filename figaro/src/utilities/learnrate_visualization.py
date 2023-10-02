@@ -3,11 +3,11 @@ import numpy as np
 
 save_name = "training_saves/vae_hidden"
 
-a = np.load(f'{save_name}_loss_3.npy', mmap_mode='r')
+a = np.load(f'{save_name}_loss.npy', mmap_mode='r')
 
 print(a.shape)
 
-a = a[5:20]
+a = a[0:20]
 
 flat = a.flatten()
 
