@@ -2,6 +2,8 @@ import numpy as np
 import torch
 from utilities.dataset_encoder import EncoderDataSet
 from torch.utils.data import DataLoader
+import os
+import pickle
 
 from models.cvae import VAE  # this VAE is actually a cVAE
 
@@ -9,7 +11,9 @@ from models.cvae import VAE  # this VAE is actually a cVAE
 dataset = EncoderDataSet("./samples/figaro/encoder_hidden", classes=["Q1", "Q2", "Q3", "Q4"])
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-save_name = "training_saves/vae_hidden"
+dir_name = "training_saves"
+os.makedirs(dir_name, exist_ok=True)
+save_name = dir_name + "/vae_hidden"
 
 # model parameter
 encoding_size = [512, 128, 32, 16]
@@ -39,24 +43,20 @@ def loss_fn(recon_x, x, mean, log_var):
 
 loss_training = []
 
-sample_save_train = []
+sample_save_train = [[], [], []]
 
 for epoch in range(epochs):
     loss_epoch = []
-    sampling_save = []
     print(f'starting with epoch {epoch + 1}')
     for iteration, (x, y) in enumerate(data_loader):
         x, y = x.to(device), y.to(device)
 
         recon_x, mean, log_var, z = model(x, y)
 
-        sampling_save.append((
-            mean.copy().detach().cpu().numpy(),
-            log_var.copy().detach().cpu().numpy(),
-            y.copy().detach().cpu().numpy()
-        ))
+        sample_save_train[0] += mean.tolist()
+        sample_save_train[1] += log_var.tolist()
+        sample_save_train[2] += y.tolist()
 
-        # TODO: Check the loss! (why do only negative Values occur)
         loss = loss_fn(recon_x, x, mean, log_var)
 
         loss_epoch.append(loss.item())
@@ -71,5 +71,8 @@ for epoch in range(epochs):
 loss_arr = np.array(loss_training)
 with open(f'{save_name}_loss.npy', 'wb') as f:
     np.save(f, loss_arr)
+
+with open(f'{save_name}_sampling_dist.npy', 'wb') as f:
+    pickle.dump(sample_save_train, f)
 
 torch.save(model.state_dict(), f'{save_name}_model.ckpt')
