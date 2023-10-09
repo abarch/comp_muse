@@ -16,8 +16,8 @@ os.makedirs(dir_name, exist_ok=True)
 save_name = dir_name + "/vae_hidden"
 
 # model parameter
-encoding_size = [512, 128, 32, 16]
-decoding_size = [16, 32, 128, 512]
+encoding_size = [131072, 1024, 128, 32, 16]
+decoding_size = [16, 32, 128, 1024, 131072]
 
 model = VAE(encoding_size, 8, decoding_size, conditional=True, num_labels=dataset.num_labels())
 model.to(device)
@@ -26,9 +26,9 @@ model.to(device)
 
 # each item has about 200 bars. In one epoch only one bar is addressed. Within 2000 epochs we
 # see each bar only once
-epochs = 20
+epochs = 1
 lr = 0.001
-batch_size = 16
+batch_size = 8
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
 data_loader = DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)

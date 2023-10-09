@@ -96,7 +96,14 @@ def main():
 
         if VERBOSE:
             print(f"Generating encoder_hidden for {batch['files']}")
-        encoder_hidden = model.encode(z, desc_bar_ids=desc_bar_ids)
+
+        offset = min(256, z['description'].size(1))
+        desc_bar_ids_ = torch.zeros(batch_size, 256, dtype=torch.int)
+        z_ = torch.zeros(batch_size, 256, dtype=torch.int)
+        z_[0,:offset] = z['description'][0, :offset]
+        z['description'] = z_
+        desc_bar_ids_[0,:offset] = desc_bar_ids[0, :offset]
+        encoder_hidden = model.encode(z, desc_bar_ids=desc_bar_ids_)
 
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)

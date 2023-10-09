@@ -4,7 +4,7 @@ import numpy as np
 from torch.utils.data import Dataset
 
 class EncoderDataSet(Dataset):
-    def __init__(self, image_base_dir, classes=None, transformer=None, target_transformer=None):
+    def __init__(self, image_base_dir, classes=None, n_batches=256, transformer=None, target_transformer=None):
         count = -1 # the first entry has index 0
         files = []
         sep = os.sep
@@ -21,6 +21,7 @@ class EncoderDataSet(Dataset):
             else:
                 files.append([path + sep + file for file in new_files])
         self.files = files
+        self.nb = n_batches
 
     def __len__(self):
         # 0-indexed
@@ -39,13 +40,8 @@ class EncoderDataSet(Dataset):
         path = self.files[i_class][item - psum]
         hidden = torch.load(path)
 
-        # we only want to reconstruct one bar, not all.
-        # in later approaches this might be changes, so one
-        # can index all bars as separate items
-        i = np.random.randint(hidden.shape[0])
-
         # return (x, y)
-        return hidden[i], torch.tensor(i_class)
+        return hidden.flatten(), torch.tensor(i_class)
 
     def num_labels(self):
         return len(self.files)

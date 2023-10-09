@@ -479,14 +479,11 @@ class Seq2SeqModule(pl.LightningModule):
                 # in this condition we only use the c-VAE
                 # out of this if-condition the c-VAE is NOT used
                 # !!!
-                latent_sample = latent_sample + torch.tensor(rnd.normal(size=(1, 256, latent_size)), dtype=torch.float) * 0.1
+                latent_sample = torch.tensor(rnd.normal(size=(1, latent_size)), dtype=torch.float)
 
-                # TODO: automate the pulling of the dimension for the hidden state
-                # the hidden state has the shape (#batches, #token, dimension_per_token)
-                # the encoder_hidden_state is for FIGARO, sampled from the c-VAE
-                encoder_hidden_states = torch.zeros((1, 256, 512), dtype=torch.float)
-                for j in range(256):
-                    encoder_hidden_states[0,j,:] = cVAE.decoder(latent_sample[0,j,:], generate_class)
+                out = cVAE.decoder(latent_sample, generate_class[None])
+
+                encoder_hidden_states = out.reshape((out.size(0), self.context_size, 512))
 
             logits = self.decode(x_, bar_ids=bar_ids_, position_ids=position_ids_,
                                  encoder_hidden_states=encoder_hidden_states)

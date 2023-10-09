@@ -8,7 +8,7 @@ from omegaconf import OmegaConf
 from models.seq2seq import Seq2SeqModule
 from models.cvae import VAE
 from input_representation import remi2midi
-from EMOPIA_cls.midi_cls.src.model.net import SAN
+#from EMOPIA_cls.midi_cls.src.model.net import SAN
 
 
 
@@ -43,8 +43,8 @@ class_to_generate = torch.tensor(CLASS_TO_GENERATE, dtype=torch.int64)
 def generate_from_thin_air():
     model = Seq2SeqModule.load_from_checkpoint(CHECKPOINT).to(device)
 
-    encoding_size = [512, 128, 32, 16]
-    decoding_size = [16, 32, 128, 512]
+    encoding_size = [131072, 1024, 128, 32, 16]
+    decoding_size = [16, 32, 128, 1024, 131072]
 
     # TODO: change to pytorch-lightning model loader
     # cVAE = VAE.load_from_checkpoint(CHECKPOINT_CVAE)
@@ -70,16 +70,17 @@ def generate_from_thin_air():
             config = OmegaConf.load(config_path)
             label_list = list(config.task.labels)
 
-            emopia_cls_model = SAN(
-                num_of_dim=config.task.num_of_dim,
-                vocab_size=config.midi.pad_idx + 1,
-                lstm_hidden_dim=config.hparams.lstm_hidden_dim,
-                embedding_size=config.hparams.embedding_size,
-                r=config.hparams.r)
+            # emopia_cls_model = SAN(
+            #    num_of_dim=config.task.num_of_dim,
+            #    vocab_size=config.midi.pad_idx + 1,
+            #    lstm_hidden_dim=config.hparams.lstm_hidden_dim,
+            #    embedding_size=config.hparams.embedding_size,
+            #    r=config.hparams.r)
             state_dict = torch.load(checkpoint_path)
             new_state_map = {model_key: model_key.split("model.")[1] for model_key in state_dict.get("state_dict").keys()}
             new_state_dict = {new_state_map[key]: value for (key, value) in state_dict.get("state_dict").items() if
                               key in new_state_map.keys()}
+            """
             emopia_cls_model.load_state_dict(new_state_dict)
             emopia_cls_model.eval()
             prediction = emopia_cls_model(xs_hat)
@@ -94,6 +95,7 @@ def generate_from_thin_air():
             elif CLS_TASK == "h_l":
                 if (c == 0 and np.argmax(pred_value) == 0) or (c==2 and np.argmax(pred_value) == 1):
                     correct[num] = True
+            """
 
         events_hat = [model.vocab.decode(x) for x in xs_hat]
         pms_hat = []
