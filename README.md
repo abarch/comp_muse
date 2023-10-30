@@ -13,6 +13,14 @@ cd figaro
 conda create --name figaro python=3.9
 conda activate figaro
 pip install -r requirements.txt
+cd ..
+```
+
+```bash
+conda activate figaro
+cd EMOPIA_cls
+pip install -r requirements.txt
+cd ..
 ```
 
 ### Preparing the Data

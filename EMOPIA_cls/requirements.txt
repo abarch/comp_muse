@@ -1,0 +1,4 @@
+pretty_midi==0.2.9
+omegaconf==2.0.2
+chorder==0.1.4
+wandb
