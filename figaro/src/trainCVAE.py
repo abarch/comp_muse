@@ -7,13 +7,16 @@ import pickle
 
 from models.cvae import VAE  # this VAE is actually a cVAE
 
+MODEL = os.getenv('MODEL', 'figaro')
+ROOT_DIR = os.getenv('ROOT_DIR', './samples')
 
-dataset = EncoderDataSet("./samples/figaro/encoder_hidden", classes=["Q1", "Q2", "Q3", "Q4"])
+
+dataset = EncoderDataSet(os.path.join(ROOT_DIR, MODEL, "encoder_hidden"), classes=["Q1", "Q2", "Q3", "Q4"])
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 dir_name = "training_saves"
 os.makedirs(dir_name, exist_ok=True)
-save_name = dir_name + "/vae_hidden"
+save_name = dir_name + f"/{MODEL}_vae_hidden"
 
 # model parameter
 encoding_size = [131072, 1024, 128, 32, 16]
@@ -26,8 +29,8 @@ model.to(device)
 
 # each item has about 200 bars. In one epoch only one bar is addressed. Within 2000 epochs we
 # see each bar only once
-epochs = 1
-lr = 0.001
+epochs = 20
+lr = 0.0005
 batch_size = 8
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 

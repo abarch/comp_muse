@@ -438,12 +438,15 @@ class Seq2SeqModule(pl.LightningModule):
                     pad_token=PAD_TOKEN,
                     eos_token=EOS_TOKEN,
                     verbose=0,
+                    resample_per_bar=False
                     ):
         r"""
         cVAE:
 
         generate_class:
             class Label for the
+        resample_per_bar:
+            Generate a new encoder hidden sample every bar, else once per song
         """
         pad_token_id = self.vocab.to_i(pad_token)
         eos_token_id = self.vocab.to_i(eos_token)
@@ -474,7 +477,7 @@ class Seq2SeqModule(pl.LightningModule):
             curr_bars = next_bars
 
             # sample from the latent space if bars changed
-            if bars_changed:
+            if i==0 or (resample_per_bar and bars_changed):
                 # !!!
                 # in this condition we only use the c-VAE
                 # out of this if-condition the c-VAE is NOT used

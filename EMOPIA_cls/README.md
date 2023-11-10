@@ -15,7 +15,7 @@ This is the official repository of **EMOPIA: A Multi-Modal Pop Piano Dataset For
 
 `2021-07-20` Upload all pretrained [weight](https://drive.google.com/file/d/1L_NOVKCElwcYUEAKp1-FZj_G6Hcq2g2c/view?usp=sharing)
 
-<figure><img src="figs/results.png">
+<figure><img src="figs/results.png"></figure>
 
 you can check ML performance in [notebook](https://github.com/Dohppak/EMOPIA_cls/blob/main/notebook/1.ML%20Classifier.ipynb)
 
